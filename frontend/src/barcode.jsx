@@ -17,7 +17,9 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-const URL = process.env.REACT_APP_BASEURL;
+
+
+
 
 
 const Barcode = () => {
@@ -25,12 +27,9 @@ const Barcode = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  // const [pageSize, setPageSize] = useState(10);
   const [fileError, setFileError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  // const [selectedRowData, setSelectedRowData] = useState(null);
   const [printAll, setPrintAll] = useState(false);
-  // const [barcodeImages, setBarcodeImages] = useState([]);
 
   const handleFileUpload = async (e) => {
     e.preventDefault();
@@ -43,7 +42,7 @@ const Barcode = () => {
 
       try {
         setLoading(true);
-        const response = await axios.post(`${URL}/upload`, formData);
+        const response = await axios.post(`http://localhost:5000/upload`, formData);
         // const response = await axios.post('http://192.168.1.112:7070/upload', formData);
         setData(response.data.data);
       } catch (error) {
@@ -72,12 +71,12 @@ const Barcode = () => {
 
   const handlePrint = (rowIndex) => {
     if (!data) {
-      return; // Exit early if data is not available
+      return; 
     }
     if (printAll) {
-      // Generate barcode images for all rows
+      
       if (!data) {
-        return; // Exit early if data is not available
+        return; 
       }
 
       const barcodeImages = [];
@@ -179,7 +178,7 @@ const Barcode = () => {
             printWindow.print();
             printWindow.close();
 
-            // Reset printAll state
+            
             setPrintAll(false);
           }
         };
@@ -339,13 +338,10 @@ const Barcode = () => {
                         backgroundColor: 'black',
                         borderRadius: 45,
                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-                        // Add hover styles
                         transition: 'background-color 0.3s',
                         outline:'none',
                         color:'white',
                       }}
-                        // Add hover event handlers
-                      // eslint-disable-next-line no-return-assign
                       onMouseEnter={(e) => (e.target.style.backgroundColor = 'black', e.target.style.color = 'white')}
                       onMouseLeave={(e) => (e.target.style.backgroundColor = 'black')}
                     >
@@ -431,13 +427,11 @@ const Barcode = () => {
               <FontAwesomeIcon icon={faChevronLeft} />
             </button>
             <ul className="page-list">
-              {/* render only relevant page numbers */}
               {Array.from(Array(Math.ceil(data.length / pageSize)).keys())
                 .slice(currentPage - 1, currentPage + 2)
                 .map((page) => (
                   <li
                     key={page}
-                    // style={{ }}
                     className={currentPage === page + 1 ? 'active' : ''}
                     style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', display: currentPage === page + 1 ? 'block' : 'none' }}
                   >
